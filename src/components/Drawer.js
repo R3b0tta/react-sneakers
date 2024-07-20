@@ -1,21 +1,29 @@
 
 
-function Drawer() {
+function Drawer({CloseCart, items, onMinus = []}) {
     return (
         <div className="overlay">
             <div className="drawer d-flex flex-column">
-                <h1>Корзина</h1>
-                <div className="items d-flex">
-                    <div className="cartItem d-flex align-center">
-                        <img id="img_cart" width={70} height={70} src="img/sneakers1.jpg" alt="sneakers"/>
-                        <div>
-                            <ul>
-                                <p>Мужские кроссовки Nike Air Max 270</p>
-                                <b>12 999 руб.</b>
-                            </ul>
+                <h1 className="d-flex justify-between">
+                    Корзина
+                    <img className="cu-p" onClick={CloseCart} src="img/deleteItem.svg" alt="delete"/>
+                </h1>
+                <div className="items">
+                { items.map((obj) => (
+                    <div className="d-flex">
+                        <div className="cartItem d-flex align-center">
+                            <img id="img_cart" width={70} height={70} src={obj.imageURL} alt="sneakers"/>
+                            <div>
+                                <ul>
+                                    <p>{obj.title}</p>
+                                    <b>{obj.price} руб.</b>
+                                </ul>
+                            </div>
+                            <img className="cu-p" onClick={() => onMinus(obj.id)} id="delete" src="img/deleteItem.svg" alt="deleteItem"/>
                         </div>
-                        <img id="delete" src="img/deleteItem.svg" alt="deleteItem"/>
                     </div>
+                ))
+                }
                 </div>
                 <div className="order">
                     <ul>
@@ -30,7 +38,7 @@ function Drawer() {
                             <b>1074 руб.</b>
                         </li>
                         <div className="checkout d-flex justify-center">
-                           <b className="d-flex align-center justify-center"> Оформить заказ </b>
+                        <b className="d-flex align-center justify-center"> Оформить заказ </b>
                             <img src="img/arrow.svg" alt="arrow"/>
                         </div>
                     </ul>

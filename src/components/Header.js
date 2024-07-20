@@ -1,5 +1,6 @@
+import React from "react";
 
-function Header() {
+function Header(props) {
     return (
         <div className="d-flex justify-between">
         <div className="header d-flex justify-between">
@@ -11,19 +12,18 @@ function Header() {
                     </ul>
                 </div>
                 <div className="right_side d-flex justify-between">
-                <span>
+                    <span onClick={props.OpenCart} className="cu-p">
                     <img src="img/cart.svg" alt="cart"/>
-
-                </span>
-                    <p>1205 руб.</p>
+                    </span>
+                    <p onClick={props.OpenCart} className="cu-p">
+                        1205 руб.
+                    </p>
                     <span>
-                    <img src="img/favorite.svg" alt="favorite"/>
-
-                </span>
+                    <img src="img/favorite.svg" alt="favorite"/></span>
                     <p>Закладки</p>
                     <span>
                     <img src="img/profile.svg" alt="profile"/>
-                </span>
+                    </span>
                 </div>
         </div>
         </div>

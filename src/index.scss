@@ -102,6 +102,7 @@ body {
   border: 1px solid #F3F3F3;
   border-radius: 20px;
   margin: 0 20px;
+  margin-bottom: 20px;
   img#img_cart {
     margin: 20px 0;
     margin-left: 25px;
@@ -137,7 +138,6 @@ body {
    width: 325px;
    height: 55px;
    border-radius: 18px;
-   opacity: 0px;
    background: #9DD458;
    cursor: pointer;
    transition: background 0.2s ease-in-out;
@@ -156,4 +156,6 @@ body {
 }
 .items {
   flex: 1;
+  overflow: scroll;
+  overflow-x:hidden;
 }
