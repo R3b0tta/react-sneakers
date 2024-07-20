@@ -1,17 +1,12 @@
 import Header from "./components/Header";
 import Card from "./components/Card";
+import Drawer from "./components/Drawer";
 function App() {
   return (
     <div className="App">
       <div className="wrapper">
-          <div className="overlay">
-              <div className="drawer">
-                  <h1>Корзина</h1>
-              </div>
-          </div>
-          <div className="d-flex justify-between">
+          <Drawer/>
           <Header/>
-          </div>
         <div className="content ml-40 mr-40">
             <div className="d-flex justify-between align-center">
                 <h1>Все кроссовки</h1>

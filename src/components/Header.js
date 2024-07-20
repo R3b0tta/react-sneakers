@@ -1,6 +1,7 @@
 
 function Header() {
     return (
+        <div className="d-flex justify-between">
         <div className="header d-flex justify-between">
                 <div className="left_side">
                     <img src="img/logotype.svg" width={40} height={40} alt="logotype"/>
@@ -24,6 +25,7 @@ function Header() {
                     <img src="img/profile.svg" alt="profile"/>
                 </span>
                 </div>
+        </div>
         </div>
     );
 }
