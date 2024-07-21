@@ -9,7 +9,6 @@ function App() {
     const [cartItems, setCartItems] = React.useState();
     const [searchValue, setSearchValue] = React.useState('');
     const [cartOpened, setCartOpened] = React.useState(false);
-    "hello world"
     React.useEffect(() => {
         axios.get('https://6698cc712069c438cd70111f.mockapi.io/api/sneakers/item').then((res) => {
             setItems(res.data);
