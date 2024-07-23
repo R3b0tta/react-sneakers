@@ -22,11 +22,15 @@ body {
   margin: 40px;
   width: 975px;
   height: 41px;
+  text-decoration:none;
+
   .left_side {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    user-select: none;
+
     img{
       position: relative;
       padding-left: 20px;

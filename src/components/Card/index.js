@@ -1,15 +1,17 @@
 import styles from './Card.module.scss'
 import React from "react";
-function Card({title, price, imageURL, onPlus, favorited}) {
+import {Favorites} from "../../Pages/Favorites";
+function Card({title, price, imageURL, onPlus, favorited = false, onFavorite, id}) {
     const [isAdded, setIsAdded] = React.useState(true)
     const [favoriteIsAdded, setFavoriteIsAdded] = React.useState(favorited)
     function ReverseAdded() {
         if (isAdded){
-            onPlus({title, imageURL, price});
+            onPlus({title, imageURL, price, id});
         }
         setIsAdded(!isAdded)
     }
     function ReverseFavoriteAdded() {
+        onFavorite({title, imageURL, price, id});
         setFavoriteIsAdded(!favoriteIsAdded)
     }
     return (

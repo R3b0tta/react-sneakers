@@ -10,25 +10,44 @@ import {Favorites} from "./Pages/Favorites";
 function App() {
     const [items, setItems] = React.useState();
     const [cartItems, setCartItems] = React.useState();
+    const [favorites, setFavorites] = React.useState();
     const [searchValue, setSearchValue] = React.useState('');
     const [cartOpened, setCartOpened] = React.useState(false);
     React.useEffect(() => {
-        axios.get('https://6698cc712069c438cd70111f.mockapi.io/api/sneakers/items').then((res) => {
-            setItems(res.data);
-        });
-        axios.get('https://6698cc712069c438cd70111f.mockapi.io/api/sneakers/Cart').then((res) => {
-            setCartItems(res.data)
-        });
+        const getData = async () => {
+            try {
+            const [cartResponse, favoritesResponse, itemsResponse] = await Promise.all([
+                axios.get('http://localhost:4000/cart'),
+                axios.get('http://localhost:4000/favorites'),
+                axios.get('http://localhost:4000/items'),
+            ]);
 
+            setCartItems(cartResponse.data);
+            setFavorites(favoritesResponse.data);
+            setItems(itemsResponse.data);
+        } catch (error) {
+                alert('Ошибка при запросе данных ;(');
+                console.error(error);
+            }
+        }
+        getData();
     }, [])
-    const onDeleteToCart = (id) => {
-        axios.delete(`https://6698cc712069c438cd70111f.mockapi.io/api/sneakers/Cart/${id}`)
+    const onDeleteToCart = async (id) => {
+        const resp = await axios.delete(`http://localhost:4000/cart/${id}` )
         setCartItems((prev) => prev?.filter(item => item.id !== id));
     }
 
     const onAddToCart = (obj) => {
-        axios.post('https://6698cc712069c438cd70111f.mockapi.io/api/sneakers/Cart', obj)
+        axios.post('http://localhost:4000/cart', obj)
         setCartItems((prev) => [...prev, obj]);
+    }
+    const onAddToFavorites = async (obj) => {
+        if(favorites?.find((favObj) => favObj.id === obj.id)) {
+            axios.delete(`http://localhost:4000/favorites/${obj.id}`, obj)
+        } else {
+            const {data} = await axios.post('http://localhost:4000/favorites', obj)
+            setFavorites((prev) => [...prev, data]);
+            }
     }
     const onChangeSearchInput = event => {
         setSearchValue(event.target.value);
@@ -52,9 +71,12 @@ function App() {
                  searchValue={searchValue}
                  onChangeSearchInput={onChangeSearchInput}
                  onAddToCart={onAddToCart}
+                 onAddToFavorites={onAddToFavorites}
              />}>
              </Route>
              <Route path="/favorites" element={<Favorites
+                 items={favorites}
+                 onAddToFavorites={onAddToFavorites}
              />}>
              </Route>
          </Routes>

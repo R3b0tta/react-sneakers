@@ -5,11 +5,13 @@ export const Home = ({
                          items,
                          searchValue,
                          onChangeSearchInput,
-                         onAddToCart
+                         onAddToCart,
+                         onAddToFavorites
+
                      }) => {
     return (
         <div>
-        <div className="content ml-40 mr-40">
+        <div className="content ml-40 ">
             <div className="d-flex justify-between align-center">
                 <h1>{searchValue ? `Поиск по запросу: ${searchValue}` : 'Все кроссовки'}</h1>
                 <div className="search-block">
@@ -18,17 +20,16 @@ export const Home = ({
                 </div>
             </div>
         </div>
-    <div className="d-flex flex-wrap justify-center">
+    <div className="ml-40 d-flex flex-wrap flex-row">
         {items
             ?.filter((item) => item.title.toLowerCase().includes(searchValue?.toLowerCase()))
             .map((item, index) => (
                 <Card
                     key={index}
-                    title={item.title}
-                    price={item.price}
-                    imageURL={item.imageURL}
+                    {...item}
                     onPlus={(obj) => onAddToCart(obj)}
                     favorited={true}
+                    onFavorite={(obj) => onAddToFavorites(obj)}
                 />
             ))
         }
