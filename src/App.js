@@ -1,9 +1,9 @@
 import Header from "./components/Header";
 import Card from "./components/Card";
 import Drawer from "./components/Drawer";
-import React, {Fragment} from "react";
+import React from "react";
 import axios from "axios";
-import { Router, Route, Routes, } from "react-router-dom";
+import { Route, Routes, } from "react-router-dom";
 import { Home } from "./Pages/Home";
 import {Favorites} from "./Pages/Favorites";
 
