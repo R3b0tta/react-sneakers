@@ -1,14 +1,30 @@
 import React from "react";
 import Card from "../components/Card";
+import AppContext from "../context";
+
+
 
 export const Home = ({
                          items,
                          searchValue,
                          onChangeSearchInput,
                          onAddToCart,
-                         onAddToFavorites
-
+                         onAddToFavorites,
+                         isLoading
                      }) => {
+    const renderItems = () => {
+        const filtredItems = items?.filter((item)  => item.title.toLowerCase().includes(searchValue?.toLowerCase()))
+       return (isLoading ? [...Array(8)] : filtredItems).map((item, index) => (
+                <Card
+                    key={index}
+                    {...item}
+                    onPlus={(obj) => onAddToCart(obj)}
+                    favorited={true}
+                    onFavorite={(obj) => onAddToFavorites(obj)}
+                    Loading={isLoading}
+                />
+            ))
+    }
     return (
         <div>
         <div className="content ml-40 ">
@@ -21,18 +37,7 @@ export const Home = ({
             </div>
         </div>
     <div className="ml-40 d-flex flex-wrap flex-row">
-        {items
-            ?.filter((item) => item.title.toLowerCase().includes(searchValue?.toLowerCase()))
-            .map((item, index) => (
-                <Card
-                    key={index}
-                    {...item}
-                    onPlus={(obj) => onAddToCart(obj)}
-                    favorited={true}
-                    onFavorite={(obj) => onAddToFavorites(obj)}
-                />
-            ))
-        }
+        {renderItems()}
     </div>
         </div>
 )

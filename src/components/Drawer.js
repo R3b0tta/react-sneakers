@@ -1,6 +1,32 @@
+import React from 'react'
+import Info from './Info';
+import AppContext from "../context";
+import axios from "axios";
 
+const delay = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
 function Drawer({CloseCart, items, onMinus = []}) {
+    const [isCompleted, setIsCompleted] = React.useState(false);
+    const [orderId, setOrderId] = React.useState(false);
+    const {setCartItems, cartItems} = React.useContext(AppContext);
+
+    const onClickOrder = async () => {
+       try  {
+           const {data} = await axios.post('http://localhost:4000/orders', {items: cartItems});
+           setOrderId(data.id)
+           setIsCompleted(true);
+           setCartItems([]);
+           for (let i = 0; i < cartItems.length; i++) {
+               const item = cartItems[i];
+               await axios.delete(`http://localhost:4000/cart/` + item.id);
+               await delay();
+           }
+
+
+       } catch {
+           alert("Ошибка при создании заказа :(")
+       }
+    }
     return (
         <div className="overlay">
             <div className="drawer d-flex flex-column">
@@ -9,7 +35,7 @@ function Drawer({CloseCart, items, onMinus = []}) {
                     <img className="cu-p" onClick={CloseCart} src="img/deleteItem.svg" alt="delete"/>
                 </h1>
                         { items.length > 0 ? (
-                            <div className="cart">
+                            <div className="cart d-flex flex-column flex">
                                 <div className="items">
                                     {items.map((obj) => (
                                         <div className="cartItem d-flex align-center">
@@ -39,22 +65,18 @@ function Drawer({CloseCart, items, onMinus = []}) {
                                             <b>1074 руб.</b>
                                         </li>
                                         <div className="checkout d-flex justify-center">
-                                            <b className="d-flex align-center justify-center"> Оформить заказ </b>
+                                            <b onClick={onClickOrder} className="d-flex align-center justify-center"> Оформить заказ </b>
                                             <img src="img/arrow.svg" alt="arrow"/>
                                         </div>
                                     </ul>
                                 </div>
                             </div>
 
-                        ) : (<div className="cartEmpty d-flex align-center justify-center flex-column flex">
-                            <img width={120} height={120} src="img/empty-cart.jpg" alt="empty_cart" className="mb-20"/>
-                            <h2>Корзина пустая</h2>
-                            <span className="opacity-6 m-30 d-flex justify-between text-center ">Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.</span>
-                            <b onClick={CloseCart}
-                               className="greenButton d-flex text-center justify-center flex-column">
-                                Вернуться назад
-                            </b>
-                        </div>)
+                        ) : (
+                            <Info title={isCompleted ? "Заказ оформлен!": "Корзина пустая"}
+                                  description={ isCompleted ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке`: "Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."}
+                                  image={isCompleted ? "img/complete-order.jpg" : "img/empty-cart.jpg"} />
+                        )
                         }
 
             </div>
