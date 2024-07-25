@@ -1,7 +1,12 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link  } from "react-router-dom";
+import AppContext from "../context";
 
 function Header(props) {
+    const { cartItems } = React.useContext(AppContext)
+    const totalPrice = cartItems?.reduce((sum, obj) => sum + obj.price, 0)
+
+
     return (
         <div className="d-flex justify-between">
         <div className="header d-flex justify-between">
@@ -19,16 +24,18 @@ function Header(props) {
                     <img src="img/cart.svg" alt="cart"/>
                     </span>
                     <p onClick={props.OpenCart} className="cu-p">
-                        1205 руб.
+                        {totalPrice} руб.
                     </p>
                     <Link to={"/Favorites"}>
                         <span>
                     <img src="img/favorite-foldout.svg" alt="favorite"/></span>
                     </Link>
                         <p>Закладки</p>
+                    <Link to={"/orders"}>
                     <span>
                     <img src="img/profile.svg" alt="profile"/>
                     </span>
+                    </Link>
                 </div>
         </div>
         </div>

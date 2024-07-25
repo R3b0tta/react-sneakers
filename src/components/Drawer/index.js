@@ -1,14 +1,17 @@
 import React from 'react'
-import Info from './Info';
-import AppContext from "../context";
+import Info from '../Info';
+import AppContext from "../../context";
 import axios from "axios";
+import styles from "./Drawer.module.scss";
 
 const delay = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
-function Drawer({CloseCart, items, onMinus = []}) {
+function Index({CloseCart, items, onMinus = [], opened}) {
     const [isCompleted, setIsCompleted] = React.useState(false);
     const [orderId, setOrderId] = React.useState(false);
     const {setCartItems, cartItems} = React.useContext(AppContext);
+    const tax = Math.round((cartItems?.reduce((sum, obj) => sum + obj.price, 0))*0.05);
+    const totalPrice = cartItems?.reduce((sum, obj) => sum + obj.price, 0);
 
     const onClickOrder = async () => {
        try  {
@@ -28,8 +31,8 @@ function Drawer({CloseCart, items, onMinus = []}) {
        }
     }
     return (
-        <div className="overlay">
-            <div className="drawer d-flex flex-column">
+        <div className={` ${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
+            <div className={`${styles.drawer} d-flex flex-column`}>
                 <h1 className="d-flex justify-between">
                     Корзина
                     <img className="cu-p" onClick={CloseCart} src="img/deleteItem.svg" alt="delete"/>
@@ -57,12 +60,12 @@ function Drawer({CloseCart, items, onMinus = []}) {
                                         <li className="d-flex align-end">
                                             <span>Итого:</span>
                                             <div></div>
-                                            <b>21498 руб.</b>
+                                            <b>{totalPrice} руб.</b>
                                         </li>
                                         <li className="d-flex align-end">
                                             <span>Налог 5%:</span>
                                             <div></div>
-                                            <b>1074 руб.</b>
+                                            <b>{tax} руб.</b>
                                         </li>
                                         <div className="checkout d-flex justify-center">
                                             <b onClick={onClickOrder} className="d-flex align-center justify-center"> Оформить заказ </b>
@@ -84,4 +87,4 @@ function Drawer({CloseCart, items, onMinus = []}) {
     )
 }
 
-export default Drawer;
+export default Index;

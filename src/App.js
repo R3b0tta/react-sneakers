@@ -1,12 +1,12 @@
 import Header from "./components/Header";
-import Drawer from "./components/Drawer";
+import Index from "./components/Drawer";
 import React from "react";
 import axios from "axios";
 import { Route, Routes, } from "react-router-dom";
 import { Home } from "./Pages/Home";
 import {Favorites} from "./Pages/Favorites";
 import AppContext from "./context";
-
+import Orders from "./Pages/Orders";
 
 function App() {
     const [items, setItems] = React.useState();
@@ -38,7 +38,7 @@ function App() {
         getData();
     }, [])
     const onDeleteToCart = async (id) => {
-        const resp = await axios.delete(`http://localhost:4000/cart/${id}` )
+        await axios.delete(`http://localhost:4000/cart/${id}` )
         setCartItems((prev) => prev?.filter(item => item.id !== id));
     }
 
@@ -85,10 +85,11 @@ function App() {
       <AppContext.Provider value={{cartItems, favorites, searchValue, items, isItemAdded, isFavoritesAdded, onAddToFavorites, setCartOpened, setCartItems}}>
           <div className="App">
               <div className="wrapper">
-                  {cartOpened && <Drawer
+                  {cartOpened && <Index
                       onMinus={(obj) => onDeleteToCart(obj)}
                       items={cartItems}
                       CloseCart={() => setCartOpened(false)}
+                      opened={cartOpened}
                   />}
                   <Header OpenCart={() => setCartOpened(true)}/>
                   <Routes>
@@ -103,6 +104,8 @@ function App() {
                       />}>
                       </Route>
                       <Route path="/favorites" element={<Favorites/>}>
+                      </Route>
+                      <Route path="/orders" element={<Orders/>}>
                       </Route>
                   </Routes>
 
